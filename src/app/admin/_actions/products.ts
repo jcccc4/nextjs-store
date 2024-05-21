@@ -3,7 +3,7 @@
 import db from "@/db/db";
 import { z } from "zod";
 import fs from "fs/promises";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 
 const fileSchema = z.instanceof(File, { message: "Required" });
@@ -60,6 +60,18 @@ export async function toggleProductAvailability(
   isAvailableForPurchase: boolean
 ) {
   await db.product.update({ where: { id }, data: { isAvailableForPurchase } })
+
+  revalidatePath("/")
+  revalidatePath("/products")
+}
+
+export async function deleteProduct(id: string) {
+  const product = await db.product.delete({ where: { id } })
+
+  if (product == null) return notFound()
+
+  await fs.unlink(product.filePath)
+  await fs.unlink(`public${product.imagePath}`)
 
   revalidatePath("/")
   revalidatePath("/products")
