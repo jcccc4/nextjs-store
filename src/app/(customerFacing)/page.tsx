@@ -6,7 +6,7 @@ import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 
-function getMostPopularProducts() {
+async function getMostPopularProducts() {
   return db.product.findMany({
     where: { isAvailableForPurchase: true },
     orderBy: { orders: { _count: "desc" } },
@@ -14,13 +14,14 @@ function getMostPopularProducts() {
   });
 }
 
-function getNewestProducts() {
+async function getNewestProducts() {
   return db.product.findMany({
     where: { isAvailableForPurchase: true },
     orderBy: { createdAt: "desc" },
     take: 6,
   });
 }
+
 
 export default function HomePage() {
   return (
