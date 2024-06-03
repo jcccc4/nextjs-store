@@ -1,5 +1,6 @@
 "use client";
 
+import { userOrderExists } from "@/app/actions/orders";
 //import { userOrderExists } from "@/app/actions/orders"
 import { Button } from "@/components/ui/button";
 import {
@@ -86,15 +87,15 @@ function Form({
 
     setIsLoading(true);
 
-    // const orderExists = await userOrderExists(email, productId)
+    const orderExists = await userOrderExists(email, productId);
 
-    // if (orderExists) {
-    //   setErrorMessage(
-    //     "You have already purchased this product. Try downloading it from the My Orders page"
-    //   )
-    //   setIsLoading(false)
-    //   return
-    // }
+    if (orderExists) {
+      setErrorMessage(
+        "You have already purchased this product. Try downloading it from the My Orders page"
+      );
+      setIsLoading(false);
+      return;
+    }
 
     stripe
       .confirmPayment({
