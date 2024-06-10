@@ -7,7 +7,7 @@ import {
     Preview,
     Tailwind,
   } from "@react-email/components"
-  import { OrderInformation } from "./components/OrderInformation"
+  import { OrderInformation } from "./_components/OrderInformation"
   
   type PurchaseReceiptEmailProps = {
     product: {
